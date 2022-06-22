@@ -1,0 +1,21 @@
+.repo {
+    border: 1px solid black;
+    margin: 10px 0;
+    padding: 10px 5px;
+    width: 100%;
+}
+.repo__header {
+    margin: 5px;
+}
+.repo__header-headline {
+    border-bottom: 1px solid black;
+    text-align: left;
+    margin: 5px 0;
+    font-size: 20px;
+    font-weight: bolder;
+    overflow: auto;
+}
+.repo-link {
+    margin-top: 10px;
+    overflow: auto;
+}

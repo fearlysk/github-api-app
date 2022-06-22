@@ -1,0 +1,36 @@
+.repo_wrapper {
+    width: 80%;
+    margin: 10px auto;
+    border: 0;
+}
+.repo__page {
+    border: 1px solid black;
+    margin-top: 10px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+}
+.repo__page-stars {
+    margin-top: 10px;
+}
+.repo__page-img {
+    width: 12%;
+    height: 8%;
+    border-radius: 10px;
+    margin: 5px;
+}
+.repo__page-description {
+    margin: 10px;
+}
+.title {
+    font-size: 18px;
+    font-weight: 900;
+    border-bottom: 1px solid plum;
+}
+.repo__page-time {
+    margin-top: 15px;
+}
+.back-btn {
+    width: 20%;
+    margin: 0;
+}

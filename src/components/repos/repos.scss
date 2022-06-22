@@ -1,0 +1,46 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 80%;
+}
+.loader {
+    width: 90px;
+    height: 90px;
+    border-radius: 100%;
+    margin: 25vh auto;
+    border: 2px dashed blueviolet;
+    animation: fetching-loader 1s infinite linear;
+    animation-direction: alternate;
+}
+@keyframes fetching-loader {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.search {
+    margin: 10px auto;
+}
+.search-input {
+    background-color: rgb(255, 215, 255);
+    border: 1px solid black;
+    padding: 4px;
+    border-radius: 10px;
+}
+.pages {
+    margin: 15px 0;
+}
+.page, .current-page {
+    border: 1px solid plum;
+    border-radius: 15%;
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+.current-page {
+    border: 2px solid purple;
+    font-weight: 700;
+}
