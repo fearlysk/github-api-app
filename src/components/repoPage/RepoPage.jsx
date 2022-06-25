@@ -21,7 +21,7 @@ const RepoPage = () => {
     <div className="repo_wrapper">
       <h2>{repo.name}</h2>
       <div className="repo__page">
-          <img className="repo__page-img" src={repo.owner.avatar_url} alt="NO IMAGE" />
+          <img className="repo__page-img" src={repo.owner.avatar_url} alt="" />
           <div className="repo__page-name"><span className="title">Repository name: </span>{repo.name}</div>
           <div className="repo__page-stars"><span className="title">Stars: </span>{repo.stargazers_count}</div>
           <div className="repo__page-watchers"><span className="title">Watchers: </span>{repo.watchers_count}</div>

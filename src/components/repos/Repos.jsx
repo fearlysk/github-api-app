@@ -16,30 +16,43 @@ const Repos = () => {
   const pagesCount = Math.ceil(totalCount/perPage);
   const pages = [];
 
+  let order = "desc";
+
   createPages(pages, pagesCount, currentPage);
 
   const repoItems = repos.items;
+
   const dispatch = useDispatch();
   
   const searchRepos = useMemo(
     () => repoItems ? repoItems.filter((repo) => repo.name.toLowerCase().includes(searchValue.toLowerCase())) : [],
-    [searchValue, repos]
+    [searchValue, repoItems]
   );
 
+    const orderByStarsAsc = () => {
+      order = "asc";
+      dispatch(fetchRepos([searchValue, currentPage, perPage, order]));
+    }
+    const orderByStarsDesc = () => {
+      order = "desc";
+      dispatch(fetchRepos([searchValue, currentPage, perPage, order]));
+    }
+
   useEffect(() => {
+    
     const debounceSearch = setTimeout(() => {
       if(searchValue || searchValue === '') {
-        dispatch(fetchRepos([searchValue, currentPage, perPage]));
+        dispatch(fetchRepos([searchValue, currentPage, perPage, order]));
         reposFetching = false;
       }
-    }, 1500);
+    }, 2000);
 
     return () => {
       reposFetching = true;
       clearTimeout(debounceSearch);
     };
     
-  }, [currentPage, searchValue,]);
+  }, [currentPage, searchValue]);
 
   return (
       <div className="wrapper">
@@ -54,13 +67,18 @@ const Repos = () => {
           />
         </div>
 
+        <div className="order-items">
+          <button onClick={orderByStarsAsc}>Sort by stars &#8593;</button>
+          <button onClick={orderByStarsDesc}>Sort by stars &#8595;</button>
+        </div>
+
         {repoItems !== undefined && !reposFetching ? searchRepos.map(repo => <Repo key={repo.id} repo={repo} />) : <div className="loader"></div>}
       
         <div className="pages">
           {pages.map((page, index) => 
           <span 
           key={index} 
-          className={currentPage == page ? "current-page" : "page"}
+          className={currentPage === page ? "current-page" : "page"}
           onClick={() => dispatch(setCurrentPage(page))}
           >
             {page}

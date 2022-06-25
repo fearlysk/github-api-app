@@ -11,11 +11,12 @@ const initialState = {
   totalCount: 0
 }
 
-export const fetchRepos = createAsyncThunk('repo/fetchRepos', async ([query, currentPage, perPage]) => {
+export const fetchRepos = createAsyncThunk('repo/fetchRepos', async ([query, currentPage, perPage, order]) => {
   if(!query) {
     query = "stars:%3E1";
   }
-  const data = await axios.get(`https://api.github.com/search/repositories?q=${query}&sort=stars&page=${currentPage}&per_page=${perPage}`)
+  const url = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=${order}&page=${currentPage}&per_page=${perPage}`
+  const data = await axios.get(url)
   .then(response => response.data)
   return data;
 })
@@ -29,10 +30,11 @@ export const reposSlice = createSlice({
     },
     setSearchValue: (state, action) => {
       state.searchValue = action.payload;
+      state.currentPage = 1;
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchRepos.pending, (state, action) => {
+    builder.addCase(fetchRepos.pending, (state) => {
       state.isFetching = true;
     })
     builder.addCase(fetchRepos.fulfilled, (state, action) => {

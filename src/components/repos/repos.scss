@@ -44,3 +44,14 @@
     border: 2px solid purple;
     font-weight: 700;
 }
+.order-items {
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+}
+.order-items button {
+    width: 40%;
+    padding: 5px 15px;
+    font-weight: 600;
+    margin: 5px;
+}
