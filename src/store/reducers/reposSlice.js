@@ -11,11 +11,11 @@ const initialState = {
   totalCount: 0
 }
 
-export const fetchRepos = createAsyncThunk('repo/fetchRepos', async ([query, currentPage, perPage, order]) => {
+export const fetchRepos = createAsyncThunk('repo/fetchRepos', async ([query, currentPage, perPage, order = "desc", sortBy = "stars"]) => {
   if(!query) {
     query = "stars:%3E1";
   }
-  const url = `https://api.github.com/search/repositories?q=${query}&sort=stars&order=${order}&page=${currentPage}&per_page=${perPage}`
+  const url = `https://api.github.com/search/repositories?q=${query}&sort=${sortBy}&order=${order}&page=${currentPage}&per_page=${perPage}`;
   const data = await axios.get(url)
   .then(response => response.data)
   return data;

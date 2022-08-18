@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Repos from "../src/components/repos/Repos";
+import Repos from "./components/repos/Repos";
 import RepoPage from "../src/components/repoPage/RepoPage";
 import "./App.scss";
 

@@ -11,7 +11,7 @@ const RepoPage = () => {
 
   useEffect(() => {
     getCurrentRepo(username, reponame, setRepo);
-  }, [])
+  }, [username, reponame])
 
   const handleClick = () => {
     navigate(-1, {replace: true});
