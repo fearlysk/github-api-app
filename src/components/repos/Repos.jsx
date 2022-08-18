@@ -1,11 +1,17 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchRepos, setCurrentPage, setSearchValue } from "../../store/reducers/reposSlice";
+import classNames from 'classnames';
 import { createPages } from "../../utils/pagesCreator";
 import Repo from "./repo/Repo";
+import RepoNotFound from "./repo/RepoNotFound";
 import "./repos.scss";
 
 const Repos = () => {
+
+  const [isEmpty, setIsEmpty] = useState(false);
+  const [actionsVisible, setActionsVisible] = useState(false);
+  const [showPages, setShowPages] = useState(false);
 
   const repos = useSelector((state) => state.repos.items);
   const searchValue = useSelector((state) => state.repos.searchValue);
@@ -16,11 +22,9 @@ const Repos = () => {
   const pagesCount = Math.ceil(totalCount/perPage);
   const pages = [];
 
-  let order = "desc";
-
   createPages(pages, pagesCount, currentPage);
 
-  const repoItems = repos.items;
+  let repoItems = repos.items;
 
   const dispatch = useDispatch();
   
@@ -29,23 +33,41 @@ const Repos = () => {
     [searchValue, repoItems]
   );
 
-    const orderByStarsAsc = () => {
-      order = "asc";
-      dispatch(fetchRepos([searchValue, currentPage, perPage, order]));
-    }
-    const orderByStarsDesc = () => {
-      order = "desc";
-      dispatch(fetchRepos([searchValue, currentPage, perPage, order]));
+    const sortRepos = (order, parameter) => {
+      dispatch(fetchRepos([searchValue, currentPage, perPage, order, parameter]));
     }
 
+    const toggleActionsMenu = () => {
+      setActionsVisible(!actionsVisible);
+    }
+
+    const actionsClasses = classNames({
+      'order-items': true,
+      'hidden': !actionsVisible,
+    });
+
   useEffect(() => {
-    
+    setIsEmpty(false);
     const debounceSearch = setTimeout(() => {
+      
       if(searchValue || searchValue === '') {
-        dispatch(fetchRepos([searchValue, currentPage, perPage, order]));
+        dispatch(fetchRepos([searchValue, currentPage, perPage]));
+        setTimeout(() => setShowPages(true), 600);
         reposFetching = false;
-      }
-    }, 2000);
+        setIsEmpty(false);
+    }
+ 
+    setTimeout(() => {
+    if(!searchRepos.length && !repos.length && !reposFetching) {
+      setIsEmpty(true);
+      setShowPages(false);
+      reposFetching = false;
+    } else {
+     setIsEmpty(false);
+    }
+  }, 1200);
+
+  }, 1000);
 
     return () => {
       reposFetching = true;
@@ -56,24 +78,37 @@ const Repos = () => {
 
   return (
       <div className="wrapper">
-        <h1>Repositories</h1>
+        <h1>&#128269; Search on Github</h1>
         <div className="search">
-        <input
-            type="text"
-            placeholder="Query..."
-            value={searchValue}
-            className="search-input"
-            onChange={(event) => dispatch(setSearchValue(event.target.value))}
-          />
+          <input
+              type="text"
+              placeholder="&#x1F50D; Search..."
+              value={searchValue}
+              className="search-input"
+              onChange={(event) => dispatch(setSearchValue(event.target.value))}
+            />
         </div>
-
-        <div className="order-items">
-          <button onClick={orderByStarsAsc}>Sort by stars &#8593;</button>
-          <button onClick={orderByStarsDesc}>Sort by stars &#8595;</button>
+       
+        <div className="order-items-wrapper">
+          <div className="actions-header">
+            <div className="actions-headline"><h1>Actions</h1></div>
+            <div><button className="actions-btn" onClick={toggleActionsMenu}>{ actionsVisible ? <span>Hide &#8593;</span> : <span>Show &#8595;</span> }</button></div>
+          </div>
         </div>
-
-        {repoItems !== undefined && !reposFetching ? searchRepos.map(repo => <Repo key={repo.id} repo={repo} />) : <div className="loader"></div>}
-      
+        
+        <div className={actionsClasses}>
+          <button className="action-btn" onClick={() => sortRepos("asc", "stars")}>Sort by stars &#8593;</button>
+          <button className="action-btn" onClick={() => sortRepos("desc", "stars")}>Sort by stars &#8595;</button>
+          <button className="action-btn" onClick={() => sortRepos("asc", "forks")}>Sort by forks &#8593;</button>
+          <button className="action-btn" onClick={() => sortRepos("desc", "forks")}>Sort by forks &#8595;</button>
+          <button className="action-btn" onClick={() => sortRepos("asc", "author-date-asc")}>Sort by author date &#8593;</button>
+          <button className="action-btn" onClick={() => sortRepos("desc", "author-date-desc")}>Sort by author date &#8595;</button> 
+        </div>
+        
+        {isEmpty && !reposFetching && !searchRepos.length ? <RepoNotFound /> : null}
+        <div className="repos">{!reposFetching ? searchRepos.map(repo => <Repo key={repo.id} repo={repo} />) : <div className="loader"></div>}</div>
+        
+      {showPages && !reposFetching && repoItems && repos ? 
         <div className="pages">
           {pages.map((page, index) => 
           <span 
@@ -83,9 +118,9 @@ const Repos = () => {
           >
             {page}
           </span>)}
-        </div>
+        </div> : null }
       </div>
     )
-}
+  }
 
 export default Repos;

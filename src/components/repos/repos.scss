@@ -4,11 +4,29 @@
     justify-content: center;
     max-width: 80%;
 }
+.repos {
+    display: grid;
+    grid-template-columns: 23% 23% 23% 23%;
+    gap: 3%;
+    justify-content: center;
+}
+@media screen and (max-width: 1200px) {
+    .repos {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        max-width: 100% !important;
+        animation: showRepo 0.6s linear;
+    }
+}
 .loader {
     width: 90px;
     height: 90px;
     border-radius: 100%;
-    margin: 25vh auto;
+    position: fixed;
+    top: 46%;
+    left: 46%;
+    transform: translate(-46%, -46%);
     border: 2px dashed blueviolet;
     animation: fetching-loader 1s infinite linear;
     animation-direction: alternate;
@@ -23,35 +41,109 @@
 }
 .search {
     margin: 10px auto;
+    display: flex;
+    flex-direction: row;
 }
 .search-input {
     background-color: rgb(255, 215, 255);
     border: 1px solid black;
     padding: 4px;
     border-radius: 10px;
+    transition: 0.3s;
+}
+.search-input:hover {
+    border: 1px solid purple;
+    border-radius: 5px;
+    transition: 0.3s;
+    padding: 7px;
+    cursor: pointer;
 }
 .pages {
-    margin: 15px 0;
+    margin: 8% 0 1% 0;
+}
+.page:hover {
+    border: 1px solid purple;
+    transition: 0.3s;
 }
 .page, .current-page {
     border: 1px solid plum;
     border-radius: 15%;
     padding: 5px 10px;
     margin: 0 5px;
+    transition: 0.3s;
     cursor: pointer;
 }
 .current-page {
     border: 2px solid purple;
     font-weight: 700;
 }
+.order-items-wrapper {
+    width: 100%;
+    margin: 0;
+    background-color: rgb(255, 215, 255);
+    border-radius: 9px;
+    text-indent: 12px;
+    border: 1px solid black;
+}
 .order-items {
     display: flex;
     justify-content: center;
     border: 1px solid black;
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+    background-color: rgba(250,250,250, 0.6);
+}
+@media screen and (max-width: 1000px) {
+    .order-items {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        justify-content: center;
+    }
+    .action-btn {
+        width: 90%;
+    }
 }
 .order-items button {
-    width: 40%;
     padding: 5px 15px;
     font-weight: 600;
     margin: 5px;
+}
+.actions-header {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 5px;
+}
+.actions-btn {
+    border: 1px solid black;
+    border-radius: 3px;
+    margin: 1% 5%;
+    padding: 6px 0;
+    font-size: 1em;
+    width: 60%;
+    transition: 0.3s;
+    float: right;
+}
+.actions-btn:hover {
+    cursor: pointer;
+    background-color: plum;
+    color: white;
+    transition: 0.3s;
+}
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+}
+.action-btn {
+    background-color: transparent;
+    border: 1px solid black;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+.action-btn:hover {
+    background-color: rgb(255, 215, 255);
+    transition: 0.3s;
+    cursor: pointer;
 }
